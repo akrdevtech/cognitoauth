@@ -1,0 +1,66 @@
+openapi: '3.0.0'
+info:
+  version: 1.0.0
+  title: AIP - support apps
+  license:
+    name: UNLICENSED
+servers:
+  - url: http://localhost:3000/
+    description: Local development server (uses local data)
+paths:
+  /:
+    summary: Health Check
+    description: This route checks to see if the API is healthy
+    get:
+      tags:
+        - Common
+      responses:
+        '200':
+          $ref: '#/components/responses/SuccessfulOperation'
+        default:
+          $ref: '#/components/responses/SuccessfulOperation'
+  /users:
+    summary: Health Check
+    description: This route checks to see if the API is healthy
+    post:
+      tags:
+        - Common
+      requestBody:
+        description: Optional description in *Markdown*
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: mattbrook@mailinator.com
+                password:
+                  type: string
+                  example: Test@123
+      responses:
+        '200':
+          $ref: '#/components/responses/SuccessfulOperation'
+        default:
+          $ref: '#/components/responses/SuccessfulOperation'
+components:
+  schemas:
+    SuccessfulOperation:
+      required:
+        - status
+      properties:
+        status:
+          type: string
+          description: Response status
+          example: ok
+  responses:
+      SuccessfulOperation:
+        description: Operation is done sucessfully
+        content:
+          application/json:
+            schema:
+              properties:
+                data:
+                  $ref: '#/components/schemas/SuccessfulOperation'
+    
