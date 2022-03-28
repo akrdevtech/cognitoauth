@@ -7,6 +7,7 @@ info:
 servers:
   - url: http://localhost:3000/
     description: Local development server (uses local data)
+  - url: https://cognitojwtgen.herokuapp.com/
 paths:
   /:
     summary: Health Check
