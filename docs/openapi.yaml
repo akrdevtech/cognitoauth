@@ -5,9 +5,12 @@ info:
   license:
     name: UNLICENSED
 servers:
+  - url: http://cognitojwtgen.herokuapp.com/
+    description: Without security
+  - url: https://cognitojwtgen.herokuapp.com/
+    description: With security
   - url: http://localhost:3000/
     description: Local development server (uses local data)
-  - url: https://cognitojwtgen.herokuapp.com/
 paths:
   /:
     summary: Health Check
