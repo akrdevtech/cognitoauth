@@ -5,6 +5,10 @@ info:
   license:
     name: UNLICENSED
 servers:
+  - url: http://cognitojwtgen.herokuapp.com/
+    description: deployed without ssl
+  - url: https://cognitojwtgen.herokuapp.com/
+    description: deployed with ssl
   - url: http://localhost:3000/
     description: Local development server (uses local data)
 paths:
