@@ -39,7 +39,7 @@ exports.Login = function (body, callback) {
         onSuccess: function (result) {
             var accessToken = result.getAccessToken().getJwtToken();
             var idToken = result.getIdToken().getJwtToken();
-            var refreshToken = result.getRefreshToken().getJwtToken();
+            var refreshToken = result.getRefreshToken().getToken();
             callback(null, {
                 accessToken,
                 idToken,

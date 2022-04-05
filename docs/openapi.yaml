@@ -5,10 +5,6 @@ info:
   license:
     name: UNLICENSED
 servers:
-  - url: http://cognitojwtgen.herokuapp.com/
-    description: Without security
-  - url: https://cognitojwtgen.herokuapp.com/
-    description: With security
   - url: http://localhost:3000/
     description: Local development server (uses local data)
 paths:
@@ -24,8 +20,8 @@ paths:
         default:
           $ref: '#/components/responses/SuccessfulOperation'
   /users:
-    summary: Health Check
-    description: This route checks to see if the API is healthy
+    summary: Logs in the cognito user
+    description: This route logs in the cognito user
     post:
       tags:
         - Common
@@ -45,11 +41,30 @@ paths:
                   example: Test@123
       responses:
         '200':
-          $ref: '#/components/responses/SuccessfulOperation'
+          $ref: '#/components/responses/UserLoginResponse'
         default:
           $ref: '#/components/responses/SuccessfulOperation'
 components:
   schemas:
+    UserLoginResponse:
+      required:
+        - accessToken
+        - idToken
+        - refreshToken
+      properties:
+        accessToken:
+          type: string
+          description: access token
+          example: "eyJraWQiOiJpNWNJVWZSUTJNZld0a1wvTzlxUFREOHNrcERGcDlMdzUzWmNHRUxJSkNBST0iLCJhbGciOiJSUzI1NiJ9.eyJvcmlnaW5fanRpIjoiNjUzNTM5NjctZDQ3Mi00ZjlmLTkyYjQtOGY3ODZmNGZkOTI4Iiwic3ViIjoiZmI3YzUxMDgtMTk2MS00ODVkLWI2NDYtNjVlZjY4MjlkMTM4IiwiZXZlbnRfaWQiOiIxOWViYjI1OC0zYWYxLTRkN2QtOTEzNy1jNGM3MWQ3YWUxNTAiLCJ0b2tlbl91c2UiOiJhY2Nlc3MiLCJzY29wZSI6ImF3cy5jb2duaXRvLnNpZ25pbi51c2VyLmFkbWluIiwiYXV0aF90aW1lIjoxNjQ5MTYyNDE1LCJpc3MiOiJodHRwczpcL1wvY29nbml0by1pZHAuY2EtY2VudHJhbC0xLmFtYXpvbmF3cy5jb21cL2NhLWNlbnRyYWwtMV9UNVNVaVlTS3MiLCJleHAiOjE2NDkxNjYwMTUsImlhdCI6MTY0OTE2MjQxNSwianRpIjoiY2UxYTgzNWQtMDRkZC00NTZhLTgwODMtZjY0ZDU5N2E1NTU5IiwiY2xpZW50X2lkIjoiN3V0OHYyZWtvNHFsZjJjNWc3dWM2ZHJlMWEiLCJ1c2VybmFtZSI6ImZiN2M1MTA4LTE5NjEtNDg1ZC1iNjQ2LTY1ZWY2ODI5ZDEzOCJ9.0UTRZU5zX-1BArvzj4kbBj8t0rdG8qx8HW4kkN7O95_pHBNdbD_Q2meoRyl8wnZGJZxPZmN5FNre_jWgeh7XjfICmI1xx4nOcsiG9n2Tnfc6krT9PfzO8iqa9wXOMXqpYpsNelUywYWVOSFivUxyRWGEql15R4eQpjg6lG8mHyKKJ8i2zBEjg-ugrao-zvp-_URMkjTBWI4kePH91520Ywj9z_RUcY0bjQ6iyv6AWlk_ZxQBo5cG73gC_RO5dODDGXWVX6dqr2g1D7ytsbUsKLmEtxz5jE7Oxufm5b05VbsHBS5VmJ7oxpDW6As_hoVeAQSSOxDgAIt3xo0EvICjDQ"
+        idToken:
+          type: string
+          description: id token
+          example: "eyJraWQiOiJZOStjVmExZ0hiekY4VlZETlhrUHh0Z29UeEZZOXdVSkFcL3dwdzFzMERXaz0iLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJmYjdjNTEwOC0xOTYxLTQ4NWQtYjY0Ni02NWVmNjgyOWQxMzgiLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwiaXNzIjoiaHR0cHM6XC9cL2NvZ25pdG8taWRwLmNhLWNlbnRyYWwtMS5hbWF6b25hd3MuY29tXC9jYS1jZW50cmFsLTFfVDVTVWlZU0tzIiwiY29nbml0bzp1c2VybmFtZSI6ImZiN2M1MTA4LTE5NjEtNDg1ZC1iNjQ2LTY1ZWY2ODI5ZDEzOCIsIm9yaWdpbl9qdGkiOiI2NTM1Mzk2Ny1kNDcyLTRmOWYtOTJiNC04Zjc4NmY0ZmQ5MjgiLCJhdWQiOiI3dXQ4djJla280cWxmMmM1Zzd1YzZkcmUxYSIsImV2ZW50X2lkIjoiMTllYmIyNTgtM2FmMS00ZDdkLTkxMzctYzRjNzFkN2FlMTUwIiwidG9rZW5fdXNlIjoiaWQiLCJhdXRoX3RpbWUiOjE2NDkxNjI0MTUsImV4cCI6MTY0OTE2NjAxNSwiaWF0IjoxNjQ5MTYyNDE1LCJqdGkiOiIwY2Y5MDI1Ny1lN2ZhLTRjYTAtOTZkZC1jMWEzOTQ5NjcyYjQiLCJlbWFpbCI6Im1hdHRicm9va0BtYWlsaW5hdG9yLmNvbSJ9.YZJvDwf-nd4a4dfjqr1puxWb-79fNlhN8FYF60_la8di4SxK8zKFUyLwi6UqdQdc8_9BaMVp3Xx7i-rZQ5fveLdPRHcf7hA2SLEqKPNj0h7YUY-hzTQPn9WWVW_ueeFcwf5J8XG0hg9wXOarRmpB262cR2KxCVzb3_8po-yfG7QfYCidFxxCYUe9SQZCHEALJ8J09ekmteg8bpDmBmwZQ3WT9JjoEOHyfRWu-CyPJhgzudQFe7d4kPYqpBJzqaxRIH_08PEUmHcYX2USOVIhCFadmUVkoGtu1ver0BTPGsPcM13KfIaoy7Ylxo7-Asyrae6w9---RKPy4UaptSBhTg"
+        refreshToken:
+          type: string
+          description: refresh token
+          example: "eyJjdHkiOiJKV1QiLCJlbmMiOiJBMjU2R0NNIiwiYWxnIjoiUlNBLU9BRVAifQ.K6n7E7dmrOFBCwV6radyZjfhMqdwEld0tgK1JaL37-F0Tco81piR8F61UZNS3aaUf-uMjBg2tR8U4wTyMX8n5Hv8CmG97kXFgQU5W25l_y0xffl6JpLHSytQ-KrAwKjc2rqJpx6gW2N88BYS0yZq87Ssk9kIW5hbqh8jiAa9yV-H7OsSA-DcAPzRzLFA_g0ETbQ2h1iu2siz0dHLYCHPWg7bVn077jopo2c628U5j0vxHB5uQLC8FwpxlHU1bGXNFWVHfLxcUvmEJltRtdhDhljtk8ZyYA8YilYWHuJEKgu0DeEVyldiDuUCG0mg3RWo3yOh_mo80ttLXFALrYtyOg.Lyor4rCs3UsGmUJo.dwX-4s27zKrKfQmnlrfHxur3JGbUElMhVdlEpsi6xQWEIFk0Ujoz51O5b5BfwfP2qWJIU3caLtH0MFmIRf5MvmYph3V5_JYjXAQrwLgmnW948i7VJQqQX_5IZVuTG55tdNJRSSwCIPV_43yotydVsHtUo_4asNUtzE816GkoCMG9wmM9V-NmlzhfTgemAkmXQsm7lhz1I8hrgpZC6OGVSwt2oSeCLsHEv6x984DKAud4Bx3sslU5mrOmXWn-oBhDcbPf3xGH-0JCUVXkdRb66X7VtWPl4r_icecZTNwAq0fWGw5TslZip5sbEs-4jE6RlCB-Q0UUwG73X49C31arDG5ohfmU1X82A_UErEfQvCel85WuesIkRV5URT0IJBzAbhP-2awiPvkaO9ancKtTVDsow152fuKUwVfROWbw_mjxs7bmgiadWFuwHqyz5y-1h1ML1RchhAlzRof_0zGK6xdqHgoSqTa9ITSagW86EZAmleMB3K9KI9YwvSQ74RO8yq9dntItRVoTo1-A8REgPnR83d4QUm9tM0UNpjHxSwsilmBmQQViJm2jsyjm2muD8RsC0Vt3vK47yUlgNCnbixbeqBZ89lunCujKxOAswMap5uVuSDEHCljx6-ET8m2iqAU6vBBKknQzAEYQ_2M115sajyW6-qrxYXGtouvbFIoAS61d05lokZ3FT3NELpE3Ec6knHNxW1pSO6oGcOKuFdEUBceQldb6mpb-hYft-448lRnd1fh-kCUrP93z2e0CNqA1Ez__DDXkbKJpIau12P1ep_A1G3HYuTOt6-ybGodA_0LFWuq4TKIr8wPDg6ZMMBx8C-9cv8mU4e3cjttJsrVwieeEaNkZyJqLpBpquqnEHyRdSwMiAoAnttGiMHKnJibR8Q1PQD0OZS53BHQeUx-8VdwruDJtuAKv1EbULDQrjZIle24fS1Mljz9MrdZTQGM7r_UvcXNNU0oko6ai-15bKb9ODr1w-xHu3kCTUPYl25nGxUN0WYM4VppbPDJWl5CFZVbFgKVchbQ1VNW00OGUSc3s7utLO6qqoI6VDnhouJChQewd40sWCtvTYxN_nSULf9fZ1bv-LP276yKc6haLkwRNVBpXVF5hN51RFSoQkVJpoEnDNGpiTS7dnxJGulxgrBYsFeNBHebZTN-IdR8bB0ofhvHaEA6tIb1u__Hzr1PNh7dDym6QpZO8OBRcCe8X0wyfJuEYXwFRpkW6AqpY_HXPwRZWRbXqYpIzwz3YS9tgU0I6JlpQr-1q0MwYKZTqWb8qPz6zvMHi5efzOtkQDFUqGZ4bF3QAoqgpzMB6x-lW01el44NSNilUDrODqWhGFg.AdKN-upWtZ-mCrP4id9KLQ"
+    
     SuccessfulOperation:
       required:
         - status
@@ -67,4 +82,10 @@ components:
               properties:
                 data:
                   $ref: '#/components/schemas/SuccessfulOperation'
+      UserLoginResponse:
+        description: Login response
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserLoginResponse'
     
