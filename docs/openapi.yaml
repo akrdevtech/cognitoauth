@@ -17,7 +17,7 @@ paths:
     description: This route checks to see if the API is healthy
     get:
       tags:
-        - Common
+        - Cognito
       responses:
         '200':
           $ref: '#/components/responses/SuccessfulOperation'
@@ -27,8 +27,10 @@ paths:
     summary: Logs in the cognito user
     description: This route logs in the cognito user
     post:
+      security:
+        - ApiKeyAuth: []
       tags:
-        - Common
+        - Cognito
       requestBody:
         description: Optional description in *Markdown*
         required: true
@@ -48,7 +50,61 @@ paths:
           $ref: '#/components/responses/UserLoginResponse'
         default:
           $ref: '#/components/responses/SuccessfulOperation'
+          
+  /stripe/payment_methods/card:
+    summary: Logs in the cognito user
+    description: This route logs in the cognito user
+    post:
+      security:
+        - ApiKeyAuth: []
+      tags:
+        - Stripe
+      requestBody:
+        description: Optional description in *Markdown*
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                number: 
+                  type: string
+                  description: card number
+                  example: 4242424242424242
+                exp_month: 
+                  type: number
+                  description: card expriy month
+                  example: 4
+                exp_year: 
+                  type: number
+                  description: card expriy year
+                  example: 2023
+                cvc: 
+                  type: string
+                  description: card CVC
+                  example: 314
+      responses:
+        '200':
+          $ref: '#/components/responses/paymentMethodCardCreateResponse'
+        default:
+          $ref: '#/components/responses/SuccessfulOperation'
+          
 components:
+  securitySchemes:
+    BearerAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: Format - Bearer {jwt-token}
+    IdentityAuth:
+      type: apiKey
+      in: header
+      name: identity
+      description: Format - Identity {id-token}
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-Api-Key
   schemas:
     UserLoginResponse:
       required:
@@ -77,6 +133,121 @@ components:
           type: string
           description: Response status
           example: ok
+    
+    paymentMethodCardCreateResponse:
+      properties: 
+        id: 
+          type: string
+          example: pm_1KroZ92eZvKYlo2CAalg1J7h
+        object: 
+          type: string
+          example: payment_method
+        billing_details: 
+          type: object
+          properties: 
+            address: 
+              type: object
+              properties: 
+                city: 
+                  type: string
+                  format: nullable
+                country: 
+                  type: string
+                  format: nullable
+                line1: 
+                  type: string
+                  format: nullable
+                line2: 
+                  type: string
+                  format: nullable
+                postal_code: 
+                  type: string
+                  format: nullable
+                state: 
+                  type: string
+                  format: nullable
+            email: 
+              type: string
+              format: nullable
+            name: 
+              type: string
+              format: nullable
+            phone: 
+              type: string
+              format: nullable
+        card: 
+          type: object
+          properties: 
+            brand: 
+              type: string
+              example: visa
+            checks: 
+              type: object
+              properties: 
+                address_line1_check: 
+                  type: string
+                  format: nullable
+                address_postal_code_check: 
+                  type: string
+                  format: nullable
+                cvc_check: 
+                  type: string
+                  example: unchecked
+            country: 
+              type: string
+              example: US
+            exp_month: 
+              type: number
+              example: 8
+            exp_year: 
+              type: number
+              example: 2023
+            fingerprint: 
+              type: string
+              example: Xt5EWLLDS7FJjR1c
+            funding: 
+              type: string
+              example: credit
+            generated_from: 
+              type: string
+              format: nullable
+            last4: 
+              type: string
+              example: 4242
+            networks: 
+              type: object
+              properties: 
+                available: 
+                  type: array
+                  items: 
+                    type: string
+                    example: visa
+                preferred: 
+                  type: string
+                  format: nullable
+            three_d_secure_usage: 
+              type: object
+              properties: 
+                supported: 
+                  type: boolean
+            wallet: 
+              type: string
+              format: nullable
+        created: 
+          type: number
+          example: 1650741864
+        customer: 
+          type: string
+          format: nullable
+        livemode: 
+          type: boolean
+        metadata: 
+          type: object
+          properties:  
+            type: 
+              type: string
+              example: card
+
   responses:
       SuccessfulOperation:
         description: Operation is done sucessfully
@@ -86,10 +257,18 @@ components:
               properties:
                 data:
                   $ref: '#/components/schemas/SuccessfulOperation'
+                  
       UserLoginResponse:
         description: Login response
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/UserLoginResponse'
+      
+      paymentMethodCardCreateResponse:
+        description: Payment method card creation response
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/paymentMethodCardCreateResponse'
     
